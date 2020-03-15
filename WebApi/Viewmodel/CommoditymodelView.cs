@@ -15,8 +15,8 @@ namespace WebApi.Viewmodel
         public string phone { get; set;  }
 
         //添加商品时候需要自动记录用户名ID
-        public int UserId { get; set; }
-        //public string Username { get; set; }
+        //public int UserId { get; set; }
+        public string Username { get; set; }
         //添加种类是需要根据种类名转换成对应的ID
         //public int CommoditycategoryId { get; set; }
         public string Commoditycategoryname { get; set; }

@@ -7,16 +7,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Interface;
 using WebApi.Viewmodel;
+using Microsoft.AspNetCore.Hosting;
+using WebApi.ExtensionServices;
 
 namespace WebApi.Services
 {
     public class ProductsService : IProductsInterface
     {
         private readonly ProductDbContext _productdb;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public ProductsService(ProductDbContext productdb) 
+        public ProductsService(
+            ProductDbContext productdb, 
+            IHostingEnvironment hostingEnvironment) 
         {
             _productdb = productdb;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public async Task<bool> AddProductsasync(CommoditymodelView model)
@@ -35,15 +41,15 @@ namespace WebApi.Services
                 var CommoditycategoryId = Commoditycategory.Id;
 
 
-                //var user =
-                //    await _productdb.users.FirstOrDefaultAsync(x => x.Username == model.Username);
+                var user =
+                    await _productdb.users.FirstOrDefaultAsync(x => x.Username == model.Username);
 
-                //if (user == null)
-                //{
-                //    throw new Exception("数据错误");
-                //}
+                if (user == null)
+                {
+                    throw new Exception("数据错误");
+                }
 
-                //var userId = user.Id;
+                var userId = user.Id;
 
 
                 if (model != null)
@@ -54,7 +60,7 @@ namespace WebApi.Services
                     Comdity.Filepath = model.Filepath;
                     Comdity.phone = model.phone;
                     Comdity.Price = model.Price;
-                    Comdity.UserId = model.UserId;
+                    Comdity.UserId = userId;
                     Comdity.CommoditycategoryId = CommoditycategoryId;
                     Comdity.startdate = model.startdate;
                     Comdity.transactionway= model.transactionway;
@@ -112,7 +118,7 @@ namespace WebApi.Services
             try
             {
                 var result = new List<CommoditymodelView>();
-
+                var WebServerPath = _hostingEnvironment.ContentRootPath;
                 var query = from commodity in _productdb.commodities
                     join CommodityCategory in _productdb.commodityCategories
                         on commodity.CommoditycategoryId equals CommodityCategory.Id
@@ -122,20 +128,22 @@ namespace WebApi.Services
                     {
                         Id=commodity.Id,
                         Commodityname = commodity.Commodityname,
-                        Filepath = commodity.Filepath,
+                        Filepath = WebServerPath+commodity.Filepath,
                         Price = commodity.Price,
-                        UserId = users.Id,
+                        Username = users.Username,
                         Commoditycategoryname = CommodityCategory.Categoryname,
                         startdate = commodity.startdate,
                         transactionway = commodity.transactionway,
                        // days = commodity.days,
                         expiredate = commodity.expiredate,
-                        status = commodity.status
+                        status = commodity.status,
+                        phone = commodity.phone
                         
                     };
 
                 result = await query.ToListAsync();
 
+                
                 return result;
                 //result = await _productdb.commodities.ToListAsync();
                 //return result;

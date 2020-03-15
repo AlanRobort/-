@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Model;
 using WebApi.Interface;
-using WebApi.Services;
 using WebApi.Viewmodel;
 
 namespace WebApi.Controllers
@@ -48,7 +45,7 @@ namespace WebApi.Controllers
             _productCategory = productCategory;
         }
 
-
+        [EnableCors("AllowSpecificOrigin")]
         [HttpGet]
         public async Task<IEnumerable<CommoditymodelView>> GetProducts()
         {
