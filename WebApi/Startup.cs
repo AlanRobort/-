@@ -41,6 +41,11 @@ namespace WebApi
 
             services.AddTransient<IProductsInterface, ProductsService>();
 
+            services.AddTransient<IImgsInterface, ImgsService>();
+
+            services.AddTransient<IProductCategoryInterface, ProductCategoryService>();
+
+
             //图片
             services.Configure<PictureOptions>(Configuration.GetSection("PictureOptions"));
 

@@ -10,5 +10,6 @@ namespace WebApi.Interface
    public interface IUserInterface
    {
        Task<Users> Userlogin(Userloginmodel userloginmodel);
-   }
+       //Task<Users> GetUsers()
+    }
 }

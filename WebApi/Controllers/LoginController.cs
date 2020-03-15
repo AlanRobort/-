@@ -25,11 +25,21 @@ namespace WebApi.Controllers
              var result = await _user.Userlogin(userlogin);
             if (result != null)
             {
-                return Ok();
+                return Ok(result);
             }
 
             return BadRequest();
             throw new Exception("登陆失败，用户名或密码错误");
         }
+
+
+        //[HttpGet]
+        //public async Task<IActionResult> GetUser()
+        //{
+
+
+
+        //    return Ok();
+        //}
     }
 }

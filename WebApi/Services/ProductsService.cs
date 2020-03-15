@@ -19,13 +19,50 @@ namespace WebApi.Services
             _productdb = productdb;
         }
 
-        public async Task<bool> AddProductsasync(Commodity model)
+        public async Task<bool> AddProductsasync(CommoditymodelView model)
         {
             try
             {
+
+                var Commoditycategory =
+                  await  _productdb.commodityCategories.FirstOrDefaultAsync(x => x.Categoryname == model.Commoditycategoryname);
+
+                if (Commoditycategory == null)
+                {
+                    throw new Exception("数据错误");
+                }
+
+                var CommoditycategoryId = Commoditycategory.Id;
+
+
+                //var user =
+                //    await _productdb.users.FirstOrDefaultAsync(x => x.Username == model.Username);
+
+                //if (user == null)
+                //{
+                //    throw new Exception("数据错误");
+                //}
+
+                //var userId = user.Id;
+
+
                 if (model != null)
                 {
-                        await _productdb.commodities.AddAsync(model);
+                    var Comdity = new Commodity();
+                    Comdity.Id = model.Id;
+                    Comdity.Commodityname = model.Commodityname;
+                    Comdity.Filepath = model.Filepath;
+                    Comdity.phone = model.phone;
+                    Comdity.Price = model.Price;
+                    Comdity.UserId = model.UserId;
+                    Comdity.CommoditycategoryId = CommoditycategoryId;
+                    Comdity.startdate = model.startdate;
+                    Comdity.transactionway= model.transactionway;
+                    Comdity.expiredate = model.expiredate;
+                    Comdity.status = model.status;
+                    Comdity.Desc = model.Desc;
+
+                    await _productdb.commodities.AddAsync(Comdity);
                         await _productdb.SaveChangesAsync();
                         return true; 
                   
@@ -87,11 +124,11 @@ namespace WebApi.Services
                         Commodityname = commodity.Commodityname,
                         Filepath = commodity.Filepath,
                         Price = commodity.Price,
-                        Username = users.Username,
-                        Commoditycategory = CommodityCategory.Categoryname,
+                        UserId = users.Id,
+                        Commoditycategoryname = CommodityCategory.Categoryname,
                         startdate = commodity.startdate,
                         transactionway = commodity.transactionway,
-                        days = commodity.days,
+                       // days = commodity.days,
                         expiredate = commodity.expiredate,
                         status = commodity.status
                         
@@ -126,7 +163,7 @@ namespace WebApi.Services
             catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
 
         }
@@ -157,7 +194,7 @@ namespace WebApi.Services
                     original.CommoditycategoryId = model.CommoditycategoryId;
                     original.startdate = model.startdate;
                     original.transactionway = model.transactionway;
-                    original.days = model.days;
+                    //original.days = model.days;
                     original.expiredate = model.expiredate;
                     original.status = model.status;
 
