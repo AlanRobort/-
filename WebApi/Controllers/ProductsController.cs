@@ -54,7 +54,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<Commodity> GetProductsbyid(int id)
+        public async Task<CommoditymodelView> GetProductsbyid(int id)
         {
             var result = await _productsInterface.GetProductsbyidasync(id);
             return result;

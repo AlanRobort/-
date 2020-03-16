@@ -156,14 +156,47 @@ namespace WebApi.Services
 
         }
 
-        public Task<Commodity> GetProductsbyidasync(int id)
+        public async Task<CommoditymodelView> GetProductsbyidasync(int id)
         {
             try
             {
                 if (id >= 0)
                 {
-                    var result = _productdb.commodities.FirstOrDefaultAsync(x => x.Id == id);
-                    return result;
+
+                    var result = await _productdb.commodities.FirstOrDefaultAsync(x => x.Id == id);
+                    if (result != null)
+                    {
+                        var Commoditycategory =
+                            await _productdb.commodityCategories.FirstOrDefaultAsync(x =>
+                                x.Id == result.CommoditycategoryId);
+
+                        var user =
+                            await _productdb.users.FirstOrDefaultAsync(x => x.Id == result.UserId);
+
+                        if (user == null)
+                        {
+                            throw new Exception("数据错误");
+                        }
+
+                        var modelView = new CommoditymodelView();
+                        modelView.Id = result.Id;
+                        modelView.Username = user.Username;
+                        modelView.Commodityname = result.Commodityname;
+                        modelView.Commoditycategoryname = Commoditycategory.Categoryname;
+                        modelView.Price = result.Price;
+                        modelView.phone = result.phone;
+                        modelView.startdate = result.startdate;
+                        modelView.status = result.status;
+                        modelView.expiredate = result.expiredate;
+                        modelView.transactionway = result.transactionway;
+                        modelView.Desc = result.Desc;
+                        modelView.Filepath = result.Filepath;
+
+                        return modelView;
+
+                    }
+
+                    throw new Exception("未获取到数据");
                 }
 
                 throw new Exception("未找到该商品");
