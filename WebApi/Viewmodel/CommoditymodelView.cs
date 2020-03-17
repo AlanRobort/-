@@ -21,7 +21,7 @@ namespace WebApi.Viewmodel
         //public int CommoditycategoryId { get; set; }
         public string Commoditycategoryname { get; set; }
         public string startdate { get; set; }
-        //交易方式 线上 和 线下
+        //交易方式 线上 和 线下               
         public string transactionway { get; set; }
         //public int days { get; set; }
         public string expiredate { get; set; }
