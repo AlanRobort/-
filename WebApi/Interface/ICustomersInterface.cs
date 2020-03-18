@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApi.Viewmodel;
 
 namespace WebApi.Interface
 {
@@ -20,7 +21,12 @@ namespace WebApi.Interface
         //修改用户
         Task<bool> UpdateCustomersasync(Customers model);
 
-        //删除用户
+        //删除用户 
         Task<bool> DeleteCustomersasync(int id);
+
+        //顾客登陆
+        Task<bool> CustomerLogin(CustomerLoginmodel model);
+
+
     }
 }

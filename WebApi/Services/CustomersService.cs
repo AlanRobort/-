@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Model;
 using Persistence;
 using WebApi.Interface;
+using WebApi.Viewmodel;
 
 namespace WebApi.Services
 {
@@ -107,6 +108,22 @@ namespace WebApi.Services
                     return false;
             }
             return false;
+        }
+
+        public async Task<bool> CustomerLogin(CustomerLoginmodel model)
+        {
+            if (model != null)
+            {
+                var result = await _dbContext.Customers.FirstOrDefaultAsync(x =>
+                    x.Username == model.Customername
+                    && x.Password == model.Customerpassword);
+                if (result != null)
+                {
+                    return true;
+                }
+            }
+            return false;
+
         }
     }
 }
