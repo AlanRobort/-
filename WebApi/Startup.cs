@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -47,6 +48,8 @@ namespace WebApi
 
             services.AddTransient<ICustomersInterface, CustomersService>();
 
+            //添加Hellang.Middleware.ProblemDetails
+            services.AddProblemDetails();
 
             //图片
             services.Configure<PictureOptions>(Configuration.GetSection("PictureOptions"));
@@ -84,6 +87,7 @@ namespace WebApi
             }
 
             app.UseCors("AllowSpecificOrigin");
+            app.UseProblemDetails();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

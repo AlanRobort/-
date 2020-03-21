@@ -55,5 +55,17 @@ namespace WebApi.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddCustomer([FromBody]Customers customersmodel)
+        {
+         var result = await _customers.AddCustomerasync(customersmodel);
+         if (result)
+         {
+             return Ok();
+         }
+
+         return StatusCode(400,"传输中错误");
+        }
+
     }
 }
