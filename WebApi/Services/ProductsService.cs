@@ -119,6 +119,7 @@ namespace WebApi.Services
             {
                 var result = new List<CommoditymodelView>();
                 var WebServerPath = _hostingEnvironment.ContentRootPath;
+
                 var query = from commodity in _productdb.commodities
                     join CommodityCategory in _productdb.commodityCategories
                         on commodity.CommoditycategoryId equals CommodityCategory.Id

@@ -4,10 +4,8 @@ using System.Text;
 
 namespace Model
 {
-    //作废
-   public class Customers
+   public class Customer
     {
-
         public int Id { get; set; }
 
         public string CustomerName { get; set; }
@@ -16,7 +14,7 @@ namespace Model
         public string Username { get; set; }
 
         //密码
-        //需要加密
+        //需要加密MD5加密
         public string Password { get; set; }
 
         public string Gender { get; set; }
@@ -30,7 +28,5 @@ namespace Model
         public string Phone { get; set; }
 
         public string Address { get; set; }
-
-
     }
 }

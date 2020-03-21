@@ -10,16 +10,16 @@ namespace WebApi.Interface
    public interface ICustomersInterface
     {
         //获取用户列表
-        Task<IEnumerable<Customers>> GetCustomersasync();
+        Task<IEnumerable<Customer>> GetCustomersasync();
 
         //获取单个用户
-        Task<Customers> GetCustomerasync(int id);
+        Task<Customer> GetCustomerasync(int id);
 
         //添加用户
-        Task<bool> AddCustomerasync(Customers model);
+        Task<bool> AddCustomerasync(Customer model);
 
         //修改用户
-        Task<bool> UpdateCustomersasync(Customers model);
+        Task<bool> UpdateCustomersasync(Customer model);
 
         //删除用户 
         Task<bool> DeleteCustomersasync(int id);

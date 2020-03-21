@@ -21,7 +21,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Customers>> GetCustomers()
+        public async Task<IEnumerable<Customer>> GetCustomers()
         {
             var result = await _customers.GetCustomersasync();
             return result;
@@ -56,7 +56,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCustomer([FromBody]Customers customersmodel)
+        public async Task<IActionResult> AddCustomer([FromBody]Customer customersmodel)
         {
          var result = await _customers.AddCustomerasync(customersmodel);
          if (result)

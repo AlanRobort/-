@@ -26,11 +26,11 @@ namespace WebApi.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddCustomerasync(Customers model)
+        public async Task<bool> AddCustomerasync(Customer model)
         {
             if (model != null)
             {
-                await _dbContext.Customers.AddAsync(model);
+                await _dbContext.Customerlists.AddAsync(model);
                 var result = await _dbContext.SaveChangesAsync();
 
                 if (result > 0)
@@ -53,7 +53,7 @@ namespace WebApi.Services
         {
           
               var result = await GetCustomerasync(id);
-                _dbContext.Customers.Remove(result);
+                _dbContext.Customerlists.Remove(result);
               var num =  await _dbContext.SaveChangesAsync();
              if (num > 0)
              {
@@ -68,10 +68,10 @@ namespace WebApi.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async  Task<Customers> GetCustomerasync(int id)
+        public async  Task<Customer> GetCustomerasync(int id)
         {
            
-               var result = await _dbContext.Customers.FirstOrDefaultAsync(x=>x.Id==id);
+               var result = await _dbContext.Customerlists.FirstOrDefaultAsync(x=>x.Id==id);
 
                return result;
         }
@@ -80,9 +80,25 @@ namespace WebApi.Services
         /// 获取所有顾客信息
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<Customers>> GetCustomersasync()
+        public async Task<IEnumerable<Customer>> GetCustomersasync()
         {
-            var result = await _dbContext.Customers.ToListAsync();
+            var result = new List<Customer>();
+            //var result = await _dbContext.Customers.ToListAsync();
+            var query = from Customer in _dbContext.Customerlists
+                        select new Customer
+                        {
+                            Id = Customer.Id,
+                            CustomerName = Customer.CustomerName,
+                            Username = Customer.Username,
+                            Password = Customer.Password,
+                            Gender = Customer.Gender,
+                            Idcard = Customer.Idcard,
+                            Age = Customer.Age,
+                            Email = Customer.Email,
+                            Phone = Customer.Phone,
+                            Address = Customer.Address
+                        };
+            result = await query.ToListAsync();
             return result;
         }
 
@@ -91,14 +107,14 @@ namespace WebApi.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> UpdateCustomersasync(Customers model)
+        public async Task<bool> UpdateCustomersasync(Customer model)
         {
             var result = await GetCustomerasync(model.Id);
 
             if (result != null)
             {
 
-                _dbContext.Customers.Update(model);
+                _dbContext.Customerlists.Update(model);
                 var num = await _dbContext.SaveChangesAsync();
                 if (num > 0)
                 {
@@ -114,7 +130,7 @@ namespace WebApi.Services
         {
             if (model != null)
             {
-                var result = await _dbContext.Customers.FirstOrDefaultAsync(x =>
+                var result = await _dbContext.Customerlists.FirstOrDefaultAsync(x =>
                     x.Username == model.Customername
                     && x.Password == model.Customerpassword);
                 if (result != null)

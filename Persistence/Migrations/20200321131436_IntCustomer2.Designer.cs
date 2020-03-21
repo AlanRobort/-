@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ProductDbContext))]
-    partial class ProductDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200321131436_IntCustomer2")]
+    partial class IntCustomer2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,35 +98,6 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CommodityImgs");
-                });
-
-            modelBuilder.Entity("Model.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address");
-
-                    b.Property<int>("Age");
-
-                    b.Property<string>("CustomerName");
-
-                    b.Property<string>("Email");
-
-                    b.Property<string>("Gender");
-
-                    b.Property<string>("Idcard");
-
-                    b.Property<string>("Password");
-
-                    b.Property<string>("Phone");
-
-                    b.Property<string>("Username");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customerlists");
                 });
 
             modelBuilder.Entity("Model.Customers", b =>
