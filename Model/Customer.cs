@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Model
 {
-   public class Customer
+    //Customerslist
+    public class Customer
     {
         public int Id { get; set; }
 

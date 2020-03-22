@@ -114,7 +114,16 @@ namespace WebApi.Services
             if (result != null)
             {
 
-                _dbContext.Customerlists.Update(model);
+                //_dbContext.Customerlists.Update(model);
+                result.CustomerName = model.CustomerName;
+                result.Username = model.Username;
+                result.Password = model.Password;
+                result.Gender = model.Gender;
+                result.Idcard = model.Idcard;
+                result.Age = model.Age;
+                result.Email = model.Email;
+                result.Phone = model.Phone;
+                result.Address = model.Address;
                 var num = await _dbContext.SaveChangesAsync();
                 if (num > 0)
                 {

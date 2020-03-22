@@ -72,9 +72,10 @@ namespace WebApi.Controllers
         /// </summary>
         /// <param name="customer"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> UpdateCustomer(Customer customer)
         {
+            var result = await _customers.UpdateCustomersasync(customer);
             return Ok();
         }
 
