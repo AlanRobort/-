@@ -67,5 +67,16 @@ namespace WebApi.Controllers
          return StatusCode(400,"传输中错误");
         }
 
+        /// <summary>
+        /// 跟新顾客信息，后续需要根据密码MD5加密问题
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> UpdateCustomer(Customer customer)
+        {
+            return Ok();
+        }
+
     }
 }

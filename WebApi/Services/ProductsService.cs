@@ -121,33 +121,41 @@ namespace WebApi.Services
                 var WebServerPath = _hostingEnvironment.ContentRootPath;
 
                 var query = from commodity in _productdb.commodities
-                    join CommodityCategory in _productdb.commodityCategories
-                        on commodity.CommoditycategoryId equals CommodityCategory.Id
-                        join users in  _productdb.users
-                            on commodity.UserId equals users.Id
-                    select new CommoditymodelView
-                    {
-                        Id=commodity.Id,
-                        Commodityname = commodity.Commodityname,
-                        Filepath = WebServerPath+commodity.Filepath,
-                        Price = commodity.Price,
-                        Username = users.Username,
-                        Commoditycategoryname = CommodityCategory.Categoryname,
-                        startdate = commodity.startdate,
-                        transactionway = commodity.transactionway,
-                       // days = commodity.days,
-                        expiredate = commodity.expiredate,
-                        status = commodity.status,
-                        phone = commodity.phone
-                        
-                    };
+                            join CommodityCategory in _productdb.commodityCategories
+                               on commodity.CommoditycategoryId equals CommodityCategory.Id
+                            join users in _productdb.users
+                                on commodity.UserId equals users.Id
+                            select new CommoditymodelView
+                            {
+                                Id = commodity.Id,
+                                Commodityname = commodity.Commodityname,
+                                Filepath = WebServerPath + commodity.Filepath,
+                                Price = commodity.Price,
+                                //
+                                Username = users.Username != null ? users.Username : null,
+                                Commoditycategoryname = CommodityCategory.Categoryname != null ?CommodityCategory.Categoryname:"未选择商品类型",
+                                startdate = commodity.startdate,
+                                transactionway = commodity.transactionway,
+                                // days = commodity.days,
+                                expiredate = commodity.expiredate != null ? commodity.expiredate : null,
+                                status = commodity.status != true ? false : false,
+                                phone = commodity.phone !=null?commodity.phone:null
+
+                            };
+
+
+                
 
                 result = await query.ToListAsync();
 
-                
-                return result;
+                //var query = await _productdb.commodities.ToListAsync();
+
+
+                // return query;
+
+                //return query;
                 //result = await _productdb.commodities.ToListAsync();
-                //return result;
+                return result;
             }
             catch (Exception ex)
             {
@@ -223,6 +231,8 @@ namespace WebApi.Services
             {
                 var original = await _productdb.commodities.SingleAsync(x => x.Id == model.Id);
 
+                var Commoditycategory =
+                    await _productdb.commodityCategories.FirstOrDefaultAsync(x => x.Id == model.CommoditycategoryId);
 
                 if (original != null)
                 {
@@ -233,9 +243,10 @@ namespace WebApi.Services
                     //需要对用户名进行查找
                     original.UserId = model.UserId;
                     //需要对分类进行查找
-                    original.CommoditycategoryId = model.CommoditycategoryId;
+                    original.CommoditycategoryId = Commoditycategory.Id;
                     original.startdate = model.startdate;
                     original.transactionway = model.transactionway;
+                    original.phone = model.phone;
                     //original.days = model.days;
                     original.expiredate = model.expiredate;
                     original.status = model.status;
