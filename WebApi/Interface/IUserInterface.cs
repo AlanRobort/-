@@ -45,5 +45,12 @@ namespace WebApi.Interface
        /// <returns></returns>
        Task<bool> DeleteUsersasync(int id);
 
+        /// <summary>
+        /// 后台用户添加
+        /// </summary>
+        /// <param name="usermodel"></param>
+        /// <returns></returns>
+        Task<bool> AddUser(Users usermodel);
+
    }
 }

@@ -108,7 +108,29 @@ namespace WebApi.Services
            return result;
         }
 
+        /// <summary>
+        /// 后台用户添加
+        /// </summary>
+        /// <param name="usermodel"></param>
+        /// <returns></returns>
+        public async Task<bool> AddUser(Users usermodel)
+        {
+            if (usermodel != null)
+            {
+              await  _dbContext.users.AddAsync(usermodel);
+              var num =await  _dbContext.SaveChangesAsync();
+              if (num > 0)
+              {
+                  return true;
+              }
 
-        
+              return false;
+            }
+
+            return false;
+        }
+
+
+
     }
 }
