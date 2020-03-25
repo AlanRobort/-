@@ -83,7 +83,13 @@ namespace WebApi.Services
             if (result != null)
             {
 
-                _dbContext.users.Update(model);
+               // _dbContext.users.Update(model);
+               result.Username = model.Username;
+               result.password = model.password;
+               result.Phone = model.Phone;
+               result.Address = model.Address;
+               result.email = model.email;
+               result.socre = model.socre;
 
              var num =  await _dbContext.SaveChangesAsync();
 
