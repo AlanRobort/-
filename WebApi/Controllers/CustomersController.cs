@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 using WebApi.Interface;
+using WebApi.Viewmodel;
 
 namespace WebApi.Controllers
 {
@@ -78,6 +79,14 @@ namespace WebApi.Controllers
             var result = await _customers.UpdateCustomersasync(customer);
             return Ok();
         }
+
+
+
+        //[HttpPost]
+        //public async Task<IActionResult> Registere(RegisteredUserViewmodel model)
+        //{
+
+        //}
 
     }
 }
