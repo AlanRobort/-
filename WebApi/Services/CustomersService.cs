@@ -135,7 +135,7 @@ namespace WebApi.Services
             return false;
         }
 
-        public async Task<bool> CustomerLogin(CustomerLoginmodel model)
+        public async Task<bool> CustomerLoginasync(CustomerLoginmodel model)
         {
             if (model != null)
             {

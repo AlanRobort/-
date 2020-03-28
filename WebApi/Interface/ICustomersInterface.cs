@@ -25,7 +25,7 @@ namespace WebApi.Interface
         Task<bool> DeleteCustomersasync(int id);
 
         //顾客登陆
-        Task<bool> CustomerLogin(CustomerLoginmodel model);
+        Task<bool> CustomerLoginasync(CustomerLoginmodel model);
 
 
     }
