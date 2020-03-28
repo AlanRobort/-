@@ -14,5 +14,6 @@ namespace WebApi.Interface
        Task<bool> Deleteasync(int id);
        Task<bool> UpdateProductsasync(Commodity model);
        Task<bool> AddProductsasync(CommoditymodelView model);
+       Task<IEnumerable<CommoditymodelView>> GetCommoditiesList(int pageindex, int pagesize)
    }
 }

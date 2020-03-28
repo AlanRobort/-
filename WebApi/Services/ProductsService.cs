@@ -271,5 +271,25 @@ namespace WebApi.Services
         //存商品图片
 
         //获取商品图片
+
+
+
+        /// <summary>
+        /// 商品分页
+        /// 处理时有个问题，如何将数据和总行数同时传回去/
+        /// </summary>
+        /// <param name="pageindex"></param>
+        /// <param name="pagesize"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<CommoditymodelView>> GetCommoditiesList(int pageindex,int pagesize)
+        {
+            IEnumerable<CommoditymodelView> CommoditiesList = new List<CommoditymodelView>();
+
+             CommoditiesList = await GetProductsasync();
+
+            return CommoditiesList.Skip((pageindex - 1)* pagesize).Take(pagesize);
+
+        }
+
     }
 }

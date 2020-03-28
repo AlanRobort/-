@@ -53,6 +53,13 @@ namespace WebApi.Controllers
            return result;
         }
 
+
+        //[HttpGet]
+        //public async Task<IEnumerable<CommoditymodelView>> GetProductsLists()
+        //{
+           
+        //}
+
         [HttpGet("{id}")]
         public async Task<CommoditymodelView> GetProductsbyid(int id)
         {
@@ -168,7 +175,7 @@ namespace WebApi.Controllers
         //}
 
 
-
+        
 
 
 
