@@ -135,6 +135,11 @@ namespace WebApi.Services
             return false;
         }
 
+        /// <summary>
+        /// 客户登陆
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<bool> CustomerLoginasync(CustomerLoginmodel model)
         {
             if (model != null)
@@ -149,6 +154,28 @@ namespace WebApi.Services
             }
             return false;
 
+        }
+
+
+        public async Task<bool> CustomerRegistered(RegisteredUserViewmodel model)
+        {
+            var result = true;
+            var getcustomer = await _dbContext.Customerlists.FirstOrDefaultAsync(x => x.Username == model.Username);
+            if (getcustomer != null)
+            {
+                result = false;
+            }
+            else
+            {
+                Customer cs = new Customer();
+                cs.Username = model.Username;
+                cs.Password = model.Password;
+                cs.Email = model.Email;
+                await AddCustomerasync(cs);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return result;
         }
     }
 }

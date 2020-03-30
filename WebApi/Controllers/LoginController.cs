@@ -64,31 +64,25 @@ namespace WebApi.Controllers
 
         /// <summary>
         /// 用户注册
-        /// 1.获取用户是否有重复
+        /// 1.获取用户名是否有重复
         /// 2.如果不重复则添加用户，如果重复则返回400状态码给前台
+        /// 3.获取email检测邮箱是否重复
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Registered(Customer model)
+        public async Task<IActionResult> Registered(RegisteredUserViewmodel model)
         {
-            var result = await _customers.GetCustomerasync(model.Id);
+            var result =await _customers.CustomerRegistered(model);
 
-            if (result != null)
+            if (result)
             {
-                var update = await _customers.UpdateCustomersasync(model);
-                if (update)
-                {
-                    return Ok();
-                }
-                else
-                {
-                    return BadRequest();
-                }
-
+                return Ok("注册成功");
             }
-
-            return BadRequest();
+            else
+            {
+                return BadRequest("注册失败");
+            }
         }
 
 

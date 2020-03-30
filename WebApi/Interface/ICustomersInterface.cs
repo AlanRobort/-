@@ -27,6 +27,7 @@ namespace WebApi.Interface
         //顾客登陆
         Task<bool> CustomerLoginasync(CustomerLoginmodel model);
 
-
+        //顾客注册
+        Task<bool> CustomerRegistered(RegisteredUserViewmodel model);
     }
 }
