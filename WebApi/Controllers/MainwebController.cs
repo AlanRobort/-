@@ -11,6 +11,12 @@ namespace WebApi.Controllers
     [ApiController]
     public class MainwebController : ControllerBase
     {
+        public MainwebController()
+        {
+
+        }
+
+
 
     }
 }

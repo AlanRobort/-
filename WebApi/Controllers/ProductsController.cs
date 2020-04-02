@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Model;
 using WebApi.Interface;
+using WebApi.ResourceParameter;
 using WebApi.Viewmodel;
 
 namespace WebApi.Controllers
@@ -45,11 +46,17 @@ namespace WebApi.Controllers
             _productCategory = productCategory;
         }
 
+
+        /// <summary>
+        /// CommodityParameter添加删选和过滤
+        /// </summary>
+        /// <param name="model">添加删选和过滤</param>
+        /// <returns></returns>
         [EnableCors("AllowSpecificOrigin")]
         [HttpGet]
-        public async Task<IEnumerable<CommoditymodelView>> GetProducts()
+        public async Task<IEnumerable<CommoditymodelView>> GetProducts([FromQuery] CommodityParameter model)
         {
-           var result = await _productsInterface.GetProductsasync();
+           var result = await _productsInterface.GetProductsasync(model);
            return result;
         }
 
