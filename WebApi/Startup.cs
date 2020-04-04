@@ -16,6 +16,7 @@ using Model;
 using Persistence;
 using WebApi.Interface;
 using WebApi.Services;
+using AutoMapper;
 
 namespace WebApi
 {
@@ -37,16 +38,22 @@ namespace WebApi
             {
                 Options.UseSqlServer(Configuration.GetConnectionString("MSSQLConnectionString"));
             });
+            //AutoMapper
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddTransient<IUserInterface, Userservice>();
+            services.AddScoped<IUserInterface, Userservice>();
 
-            services.AddTransient<IProductsInterface, ProductsService>();
+            services.AddScoped<IProductsInterface, ProductsService>();
 
-            services.AddTransient<IImgsInterface, ImgsService>();
+            services.AddScoped<IImgsInterface, ImgsService>();
 
-            services.AddTransient<IProductCategoryInterface, ProductCategoryService>();
+            services.AddScoped<IProductCategoryInterface, ProductCategoryService>();
 
-            services.AddTransient<ICustomersInterface, CustomersService>();
+            services.AddScoped<ICustomersInterface, CustomersService>();
+
+
+           
+           
 
             //添加Hellang.Middleware.ProblemDetails
            // services.AddProblemDetails();

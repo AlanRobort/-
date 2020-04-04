@@ -5,15 +5,18 @@ using System.Threading.Tasks;
 
 namespace WebApi.Viewmodel
 {
+
+   
+    // CreateMap<Commodity, CommoditymodelView>;
+    //profiles目录下
     public class CommoditymodelView
     {
+
         public int Id { get; set; }
         public string Commodityname { get; set; }
         public string Filepath { get; set; }
+        public string phone { get; set; }
         public int Price { get; set; }
-
-        public string phone { get; set;  }
-
         //添加商品时候需要自动记录用户名ID
         //public int UserId { get; set; }
         public string Username { get; set; }

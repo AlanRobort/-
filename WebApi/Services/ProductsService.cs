@@ -93,6 +93,7 @@ namespace WebApi.Services
                 var result = await _productdb.commodities.FirstOrDefaultAsync(x => x.Id == id);
                 if (result != null)
                 {
+                    
                     _productdb.commodities.Remove(result);
                     var num = await _productdb.SaveChangesAsync();
                     if (num > 0)
@@ -122,6 +123,8 @@ namespace WebApi.Services
         /// <returns></returns>
         public async Task<IEnumerable<CommoditymodelView>> GetProductsasync(CommodityParameter parameter)
         {
+            var result = new List<CommoditymodelView>();
+            var WebServerPath = _hostingEnvironment.ContentRootPath;
             try
             {
                 if (string.IsNullOrWhiteSpace(parameter.Commoditycategoryname) &&
@@ -129,8 +132,7 @@ namespace WebApi.Services
                     string.IsNullOrWhiteSpace(parameter.transactionway)&&
                     string.IsNullOrWhiteSpace(parameter.SearchItem))
                 {
-                    var result = new List<CommoditymodelView>();
-                    var WebServerPath = _hostingEnvironment.ContentRootPath;
+                    
 
                     var query = from commodity in _productdb.commodities
                         join CommodityCategory in _productdb.commodityCategories
@@ -158,44 +160,135 @@ namespace WebApi.Services
                     return result;
                 }
                 
-                var queryExpression = _productdb.commodities as IQueryable<CommoditymodelView>;
+               // var queryExpression = _productdb.commodities as IQueryable<CommoditymodelView>;
 
 
                 //商品名过滤
                 if (!string.IsNullOrWhiteSpace(parameter.Commodityname))
                 {
-                    parameter.Commodityname = parameter.Commodityname.Trim();
-                    queryExpression = queryExpression.Where(x => x.Commodityname == parameter.Commodityname);
+                    //获取服务器路径
+                    //var WebServerPath = _hostingEnvironment.ContentRootPath;
+                    //联查根据商品名过滤数据
+                    var query = from commodity in _productdb.commodities
+                        join CommodityCategory in _productdb.commodityCategories
+                            on commodity.Id equals CommodityCategory.Id
+                        join users in _productdb.users
+                            on commodity.UserId equals users.Id
+                       // where commodity.Commodityname == parameter.Commodityname
+                        //模糊查询
+                        where (commodity.Commodityname.Contains(parameter.Commodityname))
+                        select new CommoditymodelView
+                        {
+                            Id = commodity.Id,
+                            Commodityname = commodity.Commodityname,
+                            Filepath = WebServerPath + commodity.Filepath,
+                            Price = commodity.Price,
+                            //
+                            Username = users.Username != null ? users.Username : null,
+                            Commoditycategoryname = CommodityCategory.Categoryname != null
+                                ? CommodityCategory.Categoryname
+                                : "未选择商品类型",
+                            startdate = commodity.startdate,
+                            transactionway = commodity.transactionway,
+                            // days = commodity.days,
+                            expiredate = commodity.expiredate != null ? commodity.expiredate : null,
+                            status = commodity.status != true ? false : false,
+                            phone = commodity.phone != null ? commodity.phone : null
+
+                        };
+
+                    result = await query.ToListAsync();
+                    return result;
+
+
+
+
+                    //parameter.Commodityname = parameter.Commodityname.Trim();
+                    //queryExpression = queryExpression.Where(x => x.Commodityname == parameter.Commodityname);
 
                 }
 
                 //交易方式过滤
+
+                //问题：过滤出来得数据，只显示商品为ID 1 和 2 的
                 if (!string.IsNullOrWhiteSpace(parameter.transactionway))
                 {
-                    parameter.transactionway = parameter.transactionway.Trim();
-                    queryExpression = queryExpression.Where(x => x.transactionway == parameter.transactionway);
+                    var query = from commodity in _productdb.commodities
+                        join CommodityCategory in _productdb.commodityCategories
+                            on commodity.Id equals CommodityCategory.Id
+                        join users in _productdb.users
+                            on commodity.UserId equals users.Id
+                        where commodity.transactionway == parameter.transactionway
+                        select new CommoditymodelView
+                        {
+                            Id = commodity.Id,
+                            Commodityname = commodity.Commodityname,
+                            Filepath = WebServerPath + commodity.Filepath,
+                            Price = commodity.Price,
+                            //
+                            Username = users.Username != null ? users.Username : null,
+                            Commoditycategoryname = CommodityCategory.Categoryname != null
+                                ? CommodityCategory.Categoryname
+                                : "未选择商品类型",
+                            startdate = commodity.startdate,
+                            transactionway = commodity.transactionway,
+                            // days = commodity.days,
+                            expiredate = commodity.expiredate != null ? commodity.expiredate : null,
+                            status = commodity.status != true ? false : false,
+                            phone = commodity.phone != null ? commodity.phone : null
+
+                        };
+
+                    result = await query.ToListAsync();
+                    return result;
 
                 }
 
                 //商品类别过滤
                 if (!string.IsNullOrWhiteSpace(parameter.Commoditycategoryname))
                 {
-                    parameter.Commoditycategoryname = parameter.Commoditycategoryname.Trim();
-                    queryExpression = queryExpression.Where(x => x.transactionway == parameter.transactionway);
+                    var query = from commodity in _productdb.commodities
+                        join CommodityCategory in _productdb.commodityCategories
+                            on commodity.Id equals CommodityCategory.Id
+                        join users in _productdb.users
+                            on commodity.UserId equals users.Id
+                        where CommodityCategory.Categoryname == parameter.Commoditycategoryname
+                                select new CommoditymodelView
+                        {
+                            Id = commodity.Id,
+                            Commodityname = commodity.Commodityname,
+                            Filepath = WebServerPath + commodity.Filepath,
+                            Price = commodity.Price,
+                            //
+                            Username = users.Username != null ? users.Username : null,
+                            Commoditycategoryname = CommodityCategory.Categoryname != null
+                                ? CommodityCategory.Categoryname
+                                : "未选择商品类型",
+                            startdate = commodity.startdate,
+                            transactionway = commodity.transactionway,
+                            // days = commodity.days,
+                            expiredate = commodity.expiredate != null ? commodity.expiredate : null,
+                            status = commodity.status != true ? false : false,
+                            phone = commodity.phone != null ? commodity.phone : null
+
+                        };
+
+                    result = await query.ToListAsync();
+                    return result;
                 }
 
 
-                //查询
+                //查询(多个关联的模糊查询)
                 if (!string.IsNullOrWhiteSpace(parameter.SearchItem))
                 {
-                    parameter.SearchItem = parameter.SearchItem.Trim();
-                    queryExpression = queryExpression.Where(x => x.Commodityname.Contains(parameter.SearchItem) ||
-                                                                x.transactionway.Contains(parameter.SearchItem)||
-                                                                x.Desc.Contains(parameter.SearchItem)||
-                                                                x.Commoditycategoryname.Contains(parameter.SearchItem));
+                    //parameter.SearchItem = parameter.SearchItem.Trim();
+                    //queryExpression = queryExpression.Where(x => x.Commodityname.Contains(parameter.SearchItem) ||
+                    //                                            x.transactionway.Contains(parameter.SearchItem)||
+                    //                                            x.Desc.Contains(parameter.SearchItem)||
+                    //                                            x.Commoditycategoryname.Contains(parameter.SearchItem));
                 }
 
-                return await queryExpression.ToListAsync();
+               // return await queryExpression.ToListAsync();
 
                 //var query = await _productdb.commodities.ToListAsync();
 
@@ -204,7 +297,8 @@ namespace WebApi.Services
 
                 //return query;
                 //result = await _productdb.commodities.ToListAsync();
-                
+                return null;
+
             }
             catch (Exception ex)
             {
@@ -337,16 +431,16 @@ namespace WebApi.Services
         /// <param name="pageindex"></param>
         /// <param name="pagesize"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<CommoditymodelView>> GetCommoditiesList(int pageindex, int pagesize)
-        {
-            IEnumerable<CommoditymodelView> CommoditiesList = new List<CommoditymodelView>();
+        //public async Task<IEnumerable<CommoditymodelView>> GetCommoditiesList(int pageindex, int pagesize)
+        //{
+        //    IEnumerable<CommoditymodelView> CommoditiesList = new List<CommoditymodelView>();
 
-            CommoditiesList = await GetProductsasync();
+        //    CommoditiesList = await GetProductsasync();
 
-            return CommoditiesList.Skip((pageindex - 1) * pagesize).Take(pagesize);
-            return null;
+        //    return CommoditiesList.Skip((pageindex - 1) * pagesize).Take(pagesize);
+        //    return null;
 
-        }
+        //}
 
 
 
