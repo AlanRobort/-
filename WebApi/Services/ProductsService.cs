@@ -171,7 +171,7 @@ namespace WebApi.Services
                     //联查根据商品名过滤数据
                     var query = from commodity in _productdb.commodities
                         join CommodityCategory in _productdb.commodityCategories
-                            on commodity.Id equals CommodityCategory.Id
+                            on commodity.CommoditycategoryId equals CommodityCategory.Id
                         join users in _productdb.users
                             on commodity.UserId equals users.Id
                        // where commodity.Commodityname == parameter.Commodityname
@@ -215,7 +215,7 @@ namespace WebApi.Services
                 {
                     var query = from commodity in _productdb.commodities
                         join CommodityCategory in _productdb.commodityCategories
-                            on commodity.Id equals CommodityCategory.Id
+                            on commodity.CommoditycategoryId equals CommodityCategory.Id
                         join users in _productdb.users
                             on commodity.UserId equals users.Id
                         where commodity.transactionway == parameter.transactionway
@@ -249,7 +249,7 @@ namespace WebApi.Services
                 {
                     var query = from commodity in _productdb.commodities
                         join CommodityCategory in _productdb.commodityCategories
-                            on commodity.Id equals CommodityCategory.Id
+                            on commodity.CommoditycategoryId equals CommodityCategory.Id
                         join users in _productdb.users
                             on commodity.UserId equals users.Id
                         where CommodityCategory.Categoryname == parameter.Commoditycategoryname
@@ -286,6 +286,36 @@ namespace WebApi.Services
                     //                                            x.transactionway.Contains(parameter.SearchItem)||
                     //                                            x.Desc.Contains(parameter.SearchItem)||
                     //                                            x.Commoditycategoryname.Contains(parameter.SearchItem));
+                    var query = from commodity in _productdb.commodities
+                        join CommodityCategory in _productdb.commodityCategories
+                            on commodity.CommoditycategoryId equals CommodityCategory.Id
+                        join users in _productdb.users
+                            on commodity.UserId equals users.Id
+                        where (commodity.Commodityname.Contains(parameter.SearchItem)||
+                               commodity.Commodityname.Contains(parameter.SearchItem)||
+                               commodity.transactionway.Contains(parameter.SearchItem))
+                        select new CommoditymodelView
+                        {
+                            Id = commodity.Id,
+                            Commodityname = commodity.Commodityname,
+                            Filepath = WebServerPath + commodity.Filepath,
+                            Price = commodity.Price,
+                            //
+                            Username = users.Username != null ? users.Username : null,
+                            Commoditycategoryname = CommodityCategory.Categoryname != null
+                                ? CommodityCategory.Categoryname
+                                : "未选择商品类型",
+                            startdate = commodity.startdate,
+                            transactionway = commodity.transactionway,
+                            // days = commodity.days,
+                            expiredate = commodity.expiredate != null ? commodity.expiredate : null,
+                            status = commodity.status != true ? false : false,
+                            phone = commodity.phone != null ? commodity.phone : null
+
+                        };
+
+                    result = await query.ToListAsync();
+                    return result;
                 }
 
                // return await queryExpression.ToListAsync();
@@ -297,6 +327,9 @@ namespace WebApi.Services
 
                 //return query;
                 //result = await _productdb.commodities.ToListAsync();
+
+
+
                 return null;
 
             }

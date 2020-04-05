@@ -16,5 +16,19 @@ namespace WebApi.ResourceParameter
         public string transactionway { get; set; }
        
 
+        //分页
+        public int PageIndex { get; set; } = 0;
+
+        //public int PageSize { get; set; }
+
+        private int PageSize;
+
+        public int _PageSize
+        {
+            get { return PageSize; }
+            set { PageSize = value > 100 ? 100 : PageSize; }
+        }
+
+
     }
 }
