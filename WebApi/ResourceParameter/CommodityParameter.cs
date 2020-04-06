@@ -16,18 +16,25 @@ namespace WebApi.ResourceParameter
         public string transactionway { get; set; }
        
 
-        //分页
-        public int PageIndex { get; set; } = 0;
+        //分页    
+        private const int MaxPageSize = 20;
 
-        //public int PageSize { get; set; }
+        public int PageNumber { get; set; } = 1;
 
-        private int PageSize;
+        private int _PageSize = 5;
 
-        public int _PageSize
+        public int PageSize
         {
-            get { return PageSize; }
-            set { PageSize = value > 100 ? 100 : PageSize; }
+            //get { return _PageSize; }
+            //set { _PageSize = value>MaxPageSize?MaxPageSize:value; }
+            get => _PageSize;
+            set => _PageSize = (value > MaxPageSize ? MaxPageSize : value);
         }
+
+
+
+
+
 
 
     }

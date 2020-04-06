@@ -157,7 +157,6 @@ namespace WebApi.Services
 
                         };
                     result = await query.ToListAsync();
-                    return result;
                 }
                 
                // var queryExpression = _productdb.commodities as IQueryable<CommoditymodelView>;
@@ -198,7 +197,6 @@ namespace WebApi.Services
                         };
 
                     result = await query.ToListAsync();
-                    return result;
 
 
 
@@ -240,8 +238,6 @@ namespace WebApi.Services
                         };
 
                     result = await query.ToListAsync();
-                    return result;
-
                 }
 
                 //商品类别过滤
@@ -274,7 +270,6 @@ namespace WebApi.Services
                         };
 
                     result = await query.ToListAsync();
-                    return result;
                 }
 
 
@@ -315,10 +310,9 @@ namespace WebApi.Services
                         };
 
                     result = await query.ToListAsync();
-                    return result;
                 }
 
-               // return await queryExpression.ToListAsync();
+                // return await queryExpression.ToListAsync();
 
                 //var query = await _productdb.commodities.ToListAsync();
 
@@ -328,9 +322,10 @@ namespace WebApi.Services
                 //return query;
                 //result = await _productdb.commodities.ToListAsync();
 
-
-
-                return null;
+                //分页数据获取为空，但结果是有4个，返回的结果确实0
+                return result.Skip(parameter.PageSize * parameter.PageNumber)
+                    .Take(parameter.PageSize);
+                //return null;
 
             }
             catch (Exception ex)
