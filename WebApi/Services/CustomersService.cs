@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Model;
 using Persistence;
 using WebApi.Interface;
+using WebApi.ResourceParameter;
 using WebApi.Viewmodel;
 
 namespace WebApi.Services
@@ -80,26 +81,58 @@ namespace WebApi.Services
         /// 获取所有顾客信息
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<Customer>> GetCustomersasync()
+        public async Task<IEnumerable<Customer>> GetCustomersasync(CoustomerParameter coustomerParameter)
         {
             var result = new List<Customer>();
-            //var result = await _dbContext.Customers.ToListAsync();
-            var query = from Customer in _dbContext.Customerlists
-                        select new Customer
-                        {
-                            Id = Customer.Id,
-                            CustomerName = Customer.CustomerName,
-                            Username = Customer.Username,
-                            Password = Customer.Password,
-                            Gender = Customer.Gender,
-                            Idcard = Customer.Idcard,
-                            Age = Customer.Age,
-                            Email = Customer.Email,
-                            Phone = Customer.Phone,
-                            Address = Customer.Address
-                        };
+            var query = new List<Customer>() as IQueryable<Customer>;
+            if (string.IsNullOrWhiteSpace(coustomerParameter.SearchItem))
+            {
+                
+                //var result = await _dbContext.Customers.ToListAsync();
+                 query = from Customer in _dbContext.Customerlists
+                    select new Customer
+                    {
+                        Id = Customer.Id,
+                        CustomerName = Customer.CustomerName,
+                        Username = Customer.Username,
+                        Password = Customer.Password,
+                        Gender = Customer.Gender,
+                        Idcard = Customer.Idcard,
+                        Age = Customer.Age,
+                        Email = Customer.Email,
+                        Phone = Customer.Phone,
+                        Address = Customer.Address
+                    };
+                 result = await query.ToListAsync();
+                return result.Skip(coustomerParameter.PageSize * (coustomerParameter.PageNumber - 1))
+                    .Take(coustomerParameter.PageSize);
+            }
+
+            //查询（可以通过，名字，手机号，用户名，身份证）
+            query = from Customer in _dbContext.Customerlists
+                where (Customer.CustomerName.Contains(coustomerParameter.SearchItem)||
+                       Customer.Username.Contains(coustomerParameter.SearchItem)||
+                       Customer.Phone.Contains(coustomerParameter.SearchItem)||
+                       Customer.Idcard.Contains(coustomerParameter.SearchItem))
+                select new Customer
+                {
+                    Id = Customer.Id,
+                    CustomerName = Customer.CustomerName,
+                    Username = Customer.Username,
+                    Password = Customer.Password,
+                    Gender = Customer.Gender,
+                    Idcard = Customer.Idcard,
+                    Age = Customer.Age,
+                    Email = Customer.Email,
+                    Phone = Customer.Phone,
+                    Address = Customer.Address
+                };
+
             result = await query.ToListAsync();
-            return result;
+
+            return result.Skip(coustomerParameter.PageSize * (coustomerParameter.PageNumber - 1))
+                .Take(coustomerParameter.PageSize);
+
         }
 
         /// <summary>

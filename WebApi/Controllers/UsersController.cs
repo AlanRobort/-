@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 using WebApi.Interface;
+using WebApi.ResourceParameter;
 
 namespace WebApi.Controllers
 {
@@ -25,9 +26,9 @@ namespace WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IEnumerable<Users>> GetUsers()
+        public async Task<IEnumerable<Users>> GetUsers([FromQuery] UsersParameter usersParameter)
         {
-          var result = await _users.GetUsersasync();
+          var result = await _users.GetUsersasync(usersParameter);
             return result;
         }
 

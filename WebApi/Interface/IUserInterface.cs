@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApi.ResourceParameter;
 using WebApi.Viewmodel;
 
 namespace WebApi.Interface
@@ -20,7 +21,7 @@ namespace WebApi.Interface
        /// 获取用户列表
        /// </summary>
        /// <returns></returns>
-       Task<IEnumerable<Users>> GetUsersasync();
+       Task<IEnumerable<Users>> GetUsersasync(UsersParameter model);
 
 
        /// <summary>

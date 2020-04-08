@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Interface;
+using WebApi.ResourceParameter;
 using WebApi.Viewmodel;
 
 namespace WebApi.Services
@@ -64,10 +65,34 @@ namespace WebApi.Services
         /// 获取用户列表
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<Users>> GetUsersasync()
+        public async Task<IEnumerable<Users>> GetUsersasync(UsersParameter usersParameter)
         {
-             var result =await  _dbContext.users.ToListAsync();
-             return result;
+            var result = new List<Users>();
+            if (usersParameter.SearchItem == null)
+            {
+                result = await _dbContext.users.ToListAsync();
+                return result;
+            }
+
+            var query = from users in _dbContext.users
+                where (users.Username.Contains(usersParameter.SearchItem) ||
+                       (users.Phone.Contains(usersParameter.SearchItem)))
+                select new Users
+                {
+                    Id = users.Id,
+                    Username = users.Username,
+                    password = users.password,
+                    Phone = users.Phone,
+                    Address = users.Address,
+                    email = users.email
+                };
+
+            result = await query.ToListAsync();
+
+            return result.Skip(usersParameter.PageSize * (usersParameter.PageNumber - 1))
+                .Take(usersParameter.PageSize);
+
+
         }
 
 

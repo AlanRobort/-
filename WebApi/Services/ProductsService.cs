@@ -323,8 +323,9 @@ namespace WebApi.Services
                 //result = await _productdb.commodities.ToListAsync();
 
                 //分页数据获取为空，但结果是有4个，返回的结果确实0
-                return result.Skip(parameter.PageSize * parameter.PageNumber)
-                    .Take(parameter.PageSize);
+                return result.Skip(parameter.PageSize * (parameter.PageNumber - 1)).Take(parameter.PageSize);
+
+
                 //return null;
 
             }

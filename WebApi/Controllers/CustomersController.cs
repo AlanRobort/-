@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 using WebApi.Interface;
+using WebApi.ResourceParameter;
 using WebApi.Viewmodel;
 
 namespace WebApi.Controllers
@@ -22,9 +23,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Customer>> GetCustomers()
+        public async Task<IEnumerable<Customer>> GetCustomers([FromQuery]CoustomerParameter coustomerParameter)
         {
-            var result = await _customers.GetCustomersasync();
+            var result = await _customers.GetCustomersasync(coustomerParameter);
             return result;
         }
 

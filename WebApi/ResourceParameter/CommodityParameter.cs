@@ -21,7 +21,7 @@ namespace WebApi.ResourceParameter
 
         public int PageNumber { get; set; } = 1;
 
-        private int _PageSize = 5;
+        private int _PageSize = 2;
 
         public int PageSize
         {
@@ -31,11 +31,6 @@ namespace WebApi.ResourceParameter
             set => _PageSize = (value > MaxPageSize ? MaxPageSize : value);
         }
 
-
-
-
-
-
-
+        //public object pagesize { get; internal set; }
     }
 }
